@@ -9,19 +9,11 @@ const target = env.ASPNETCORE_HTTPS_PORT
 
 const context = ['/weatherforecast'];
 
-const onError = (err, req, resp, target) => {
-  console.error(`${err.message}`);
-};
-
 module.exports = function (app) {
   const appProxy = createProxyMiddleware(context, {
     target: target,
-    // Handle errors to prevent the proxy middleware from crashing when
-    // the ASP NET Core webserver is unavailable
-    onError: onError,
+    onError: (err) => console.error(err.message),
     secure: false,
-    // Uncomment this line to add support for proxying websockets
-    //ws: true,
     headers: {
       Connection: 'Keep-Alive',
     },
