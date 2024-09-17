@@ -1,5 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+
+using PhotoStudio.DAL;
+
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllersWithViews();
+
+string? connectionString = builder.Configuration.GetConnectionString("PhotoStudioDatabase");
+builder.Services.AddDbContext<PhotoStudioContext>((options) => options.UseSqlite(connectionString));
 
 WebApplication app = builder.Build();
 
