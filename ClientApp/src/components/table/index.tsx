@@ -1,16 +1,11 @@
 import { useState } from 'react';
-import { Form, Typography, Popconfirm, Table as AntTable } from 'antd';
+import { Form, Typography, Table as AntTable } from 'antd';
+import { COLUMN_MIN_WIDTH } from './constants';
 import EditableCell from '../editable-cell';
 
 import type { Dispatch, SetStateAction, CSSProperties } from 'react';
 import type { TableProps as AntTableProps } from 'antd';
 import type { BaseModel } from '../../types/models';
-
-interface TableProps<T extends BaseModel> {
-  data: T[];
-  setData: Dispatch<SetStateAction<T[]>>;
-  // columns: TableColumn[];
-}
 
 interface TableColumn {
   title: string;
@@ -20,61 +15,56 @@ interface TableColumn {
   dtype?: string;
 }
 
-const Table = <T extends BaseModel>({ data, setData }: TableProps<T>) => {
+interface TableColumnWithRender<T extends BaseModel> extends TableColumn {
+  render?: (value: any, record: T, index: number) => React.ReactNode;
+}
+
+interface TableProps<T extends BaseModel> {
+  data: T[];
+  setData: Dispatch<SetStateAction<T[]>>;
+  columns: TableColumn[];
+}
+
+const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) => {
   const [form] = Form.useForm();
-  const [editingKey, setEditingKey] = useState('');
+  const [editingKey, setEditingKey] = useState<number | null>(null);
 
   const isEditing = (record: T) => record.id === editingKey;
 
   const edit = (record: Partial<T> & { id: T['id'] }) => {
-    form.setFieldsValue({ name: '', age: '', address: '', ...record });
+    form.setFieldsValue(record);
     setEditingKey(record.id);
   };
 
   const cancel = () => {
-    setEditingKey('');
+    setEditingKey(null);
   };
 
-  const save = async (key: React.Key) => {
+  const save = async (id: T['id']) => {
     try {
       const row = (await form.validateFields()) as T;
 
       const newData = [...data];
-      const index = newData.findIndex((item) => key === item.id);
+      const index = newData.findIndex((item) => id === item.id);
 
       if (index > -1) {
         newData.splice(index, 1, { ...newData[index], ...row });
         setData(newData);
-        setEditingKey('');
+        setEditingKey(null);
       } else {
         newData.push(row);
         setData(newData);
-        setEditingKey('');
+        setEditingKey(null);
       }
     } catch (errInfo) {
       console.log('Validate failed:', errInfo);
     }
   };
 
-  const columns = [
+  const internalColumns: TableColumnWithRender<T>[] = [
+    ...columns,
     {
-      title: 'name',
-      dataIndex: 'name',
-      editable: true,
-    },
-    {
-      title: 'age',
-      dataIndex: 'age',
-      dtype: 'number',
-      editable: true,
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-      editable: true,
-    },
-    {
-      title: 'operation',
+      title: 'Operation',
       dataIndex: 'operation',
       render: (_: any, record: T) => {
         const editable = isEditing(record);
@@ -83,12 +73,10 @@ const Table = <T extends BaseModel>({ data, setData }: TableProps<T>) => {
             <Typography.Link onClick={() => save(record.id)} style={{ marginInlineEnd: 8 }}>
               Save
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
-            </Popconfirm>
+            <Typography.Link onClick={cancel}>Cancel</Typography.Link>
           </span>
         ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+          <Typography.Link disabled={editingKey !== null} onClick={() => edit(record)}>
             Edit
           </Typography.Link>
         );
@@ -96,14 +84,14 @@ const Table = <T extends BaseModel>({ data, setData }: TableProps<T>) => {
     },
   ];
 
-  const mergedColumns: AntTableProps<T>['columns'] = columns.map((col) => {
+  const mergedColumns: AntTableProps<T>['columns'] = internalColumns.map((col) => {
     if (!col.editable) {
-      return { ...col, minWidth: 200 };
+      return { minWidth: COLUMN_MIN_WIDTH, ...col };
     }
 
     return {
+      minWidth: COLUMN_MIN_WIDTH,
       ...col,
-      minWidth: 200,
       onCell: (record: T) => ({
         record,
         inputType: col?.dtype ?? 'text',
