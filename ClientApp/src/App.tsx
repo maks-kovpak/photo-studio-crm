@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Table from './components/table';
+import Table, { TableColumn } from './components/table';
 
 import type { ClientModel } from './types/models';
 
@@ -10,11 +10,12 @@ const originData = Array.from({ length: 100 }).map<ClientModel>((_, i) => ({
   phone: '+32534646',
 }));
 
-const columns = [
+const columns: TableColumn<ClientModel>[] = [
   {
     title: 'ID',
     dataIndex: 'id',
     editable: false,
+    dtype: 'number',
     width: 100,
     minWidth: 100,
   },
@@ -22,11 +23,13 @@ const columns = [
     title: 'Full name',
     dataIndex: 'fullName',
     editable: true,
+    dtype: 'text',
   },
   {
     title: 'Address',
     dataIndex: 'address',
     editable: true,
+    dtype: 'text',
   },
 ];
 
