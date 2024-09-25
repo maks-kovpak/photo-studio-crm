@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Form, Typography, Table as AntTable } from 'antd';
-import { COLUMN_MIN_WIDTH } from './constants';
-import ModalForm from '../modal-form';
+import { COLUMN_MIN_WIDTH } from '@/lib/constants';
+import ModalForm from '@/components/modal-form';
 
 import type { Dispatch, SetStateAction } from 'react';
 import type { ColumnType } from 'antd/es/table';
-import type { BaseModel } from '../../types/models';
-import type { DType } from '../../lib/dtype';
+import type { BaseModel } from '@/types/models';
+import type { DType } from '@/lib/dtype';
 
 import './index.css';
 

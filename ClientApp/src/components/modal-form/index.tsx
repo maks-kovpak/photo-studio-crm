@@ -1,10 +1,9 @@
 import { Form, FormInstance, Modal } from 'antd';
-import { BaseModel } from '../../types/models';
-
-import { DTypeConfig } from '../../lib/dtype';
+import { DTypeConfig } from '@/lib/dtype';
 
 import type { ModalProps } from 'antd';
-import type { TableColumn } from '../table';
+import type { BaseModel } from '@/types/models';
+import type { TableColumn } from '@/components/table';
 
 interface ModalFormProps<T extends BaseModel> extends ModalProps {
   fields: TableColumn<T>[];
