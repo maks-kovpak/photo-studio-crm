@@ -19,12 +19,15 @@ const ModalForm = <T extends BaseModel>({ fields, formInstance, ...props }: Moda
           .filter((field) => field.editable)
           .map((field) => (
             <Form.Item
+              label={field.title}
+              layout="vertical"
+              required={false}
+              key={field.dataIndex}
               name={field.dataIndex}
-              style={{ margin: '1rem 0' }}
               rules={[
                 {
                   required: true,
-                  message: `Please input ${field.title}!`,
+                  message: `Please input this field!`,
                 },
               ]}
             >

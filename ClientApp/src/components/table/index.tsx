@@ -8,7 +8,11 @@ import type { ColumnType } from 'antd/es/table';
 import type { BaseModel } from '../../types/models';
 import type { DType } from '../../lib/dtype';
 
-export interface TableColumn<T extends BaseModel> extends Omit<ColumnType<T>, 'dataIndex'> {
+import './index.css';
+
+export interface TableColumn<T extends BaseModel>
+  extends Omit<ColumnType<T>, 'dataIndex' | 'title'> {
+  title: string;
   dataIndex: string;
   dtype?: DType;
   editable?: boolean;
@@ -23,36 +27,39 @@ interface TableProps<T extends BaseModel> {
 const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
+  const [editingKey, setEditingKey] = useState<number | null>(null);
+
+  const closeModal = () => {
+    setOpenModal(false);
+  };
 
   const edit = (record: Partial<T> & { id: T['id'] }) => {
     form.setFieldsValue(record);
     setOpenModal(true);
+    setEditingKey(record.id);
   };
 
-  // const cancel = () => {
-  //   setEditingKey(null);
-  // };
+  const saveData = async () => {
+    try {
+      const row = (await form.validateFields()) as T;
 
-  // const save = async (id: T['id']) => {
-  //   try {
-  //     const row = (await form.validateFields()) as T;
+      const newData = [...data];
+      const index = newData.findIndex((item) => editingKey === item.id);
 
-  //     const newData = [...data];
-  //     const index = newData.findIndex((item) => id === item.id);
+      if (index > -1) {
+        newData.splice(index, 1, { ...newData[index], ...row });
+        setData(newData);
+      } else {
+        newData.push(row);
+        setData(newData);
+      }
 
-  //     if (index > -1) {
-  //       newData.splice(index, 1, { ...newData[index], ...row });
-  //       setData(newData);
-  //       setEditingKey(null);
-  //     } else {
-  //       newData.push(row);
-  //       setData(newData);
-  //       setEditingKey(null);
-  //     }
-  //   } catch (errInfo) {
-  //     console.log('Validate failed:', errInfo);
-  //   }
-  // };
+      setEditingKey(null);
+      closeModal();
+    } catch (errInfo) {
+      console.log('Validate failed:', errInfo);
+    }
+  };
 
   const internalColumns: TableColumn<T>[] = [
     ...columns,
@@ -73,7 +80,16 @@ const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) =
   return (
     <>
       <AntTable bordered={true} dataSource={data} columns={mergedColumns} tableLayout="auto" />
-      <ModalForm title="Edit" formInstance={form} fields={internalColumns} open={openModal} />
+      <ModalForm
+        className="edit-form"
+        title="Edit"
+        formInstance={form}
+        fields={internalColumns}
+        open={openModal}
+        onClose={closeModal}
+        onCancel={closeModal}
+        onOk={saveData}
+      />
     </>
   );
 };
