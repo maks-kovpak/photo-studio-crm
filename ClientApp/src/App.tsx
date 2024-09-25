@@ -1,40 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Table, { TableColumn } from './components/table';
 
-import type { ClientModel } from './types/models';
+import type { BaseModel, ClientModel } from './types/models';
 
-const originData = Array.from({ length: 100 }).map<ClientModel>((_, i) => ({
-  id: i,
-  fullName: `Edward ${i}`,
-  address: `London Park no. ${i}`,
-  phone: '+32534646',
-}));
-
-const columns: TableColumn<ClientModel>[] = [
-  {
-    title: 'ID',
-    dataIndex: 'id',
-    editable: false,
-    dtype: 'number',
-    width: 100,
-    minWidth: 100,
-  },
-  {
-    title: 'Full name',
-    dataIndex: 'fullName',
-    editable: true,
-    dtype: 'text',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    editable: true,
-    dtype: 'text',
-  },
-];
+export interface TableDefinition<T extends BaseModel> {
+  data: T[];
+  columns: TableColumn<T>[];
+}
 
 const App = () => {
-  const [data, setData] = useState<ClientModel[]>(originData);
+  const [data, setData] = useState<ClientModel[]>([]);
+  const [columns, setColumns] = useState<TableColumn<ClientModel>[]>([]);
+
+  useEffect(() => {
+    fetch('/api/clients')
+      .then((res) => res.json())
+      .then((clients: TableDefinition<ClientModel>) => {
+        setData(clients.data);
+        setColumns(clients.columns);
+      });
+  }, []);
+
   return <Table data={data} setData={setData} columns={columns} />;
 };
 

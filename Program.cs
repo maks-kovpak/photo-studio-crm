@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 using Microsoft.EntityFrameworkCore;
 
 using PhotoStudio.DAL;
@@ -5,7 +7,9 @@ using PhotoStudio.DAL;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddJsonOptions(options => {
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
 
 string? connectionString = builder.Configuration.GetConnectionString("PhotoStudioDatabase");
 builder.Services.AddDbContext<PhotoStudioContext>((options) => options.UseSqlite(connectionString));
