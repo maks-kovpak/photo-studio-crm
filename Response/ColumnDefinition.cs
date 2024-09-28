@@ -1,4 +1,4 @@
-namespace PhotoStudio.ResponseComponents;
+namespace PhotoStudio.Response;
 
 public class ColumnDefintion {
     public string Title { get; set; } = default!;

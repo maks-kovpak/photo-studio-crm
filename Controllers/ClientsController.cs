@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using PhotoStudio.DAL;
 using PhotoStudio.Models;
-using PhotoStudio.ResponseComponents;
+using PhotoStudio.Response;
 
 namespace PhotoStudio.Controllers;
 

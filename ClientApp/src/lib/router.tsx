@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '@/App';
 import ClientsPage from '@/pages/clients';
+import ServicesPage from '@/pages/services';
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,11 @@ export const router = createBrowserRouter([
         id: 'clients',
         path: '/clients',
         element: <ClientsPage />,
+      },
+      {
+        id: 'services',
+        path: '/services',
+        element: <ServicesPage />,
       },
     ],
   },
