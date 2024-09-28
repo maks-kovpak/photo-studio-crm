@@ -1,7 +1,14 @@
 import { RouterProvider } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { router } from './lib/router';
 
 import './index.css';
 
-createRoot(document.getElementById('root')!).render(<RouterProvider router={router} />);
+const queryClient = new QueryClient();
+
+createRoot(document.getElementById('root')!).render(
+  <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+  </QueryClientProvider>
+);

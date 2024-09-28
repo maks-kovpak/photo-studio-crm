@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react';
-import Table, { TableColumn } from '@/components/table';
+import { useQuery } from 'react-query';
+import { clientsApi } from '@/api/clients';
+import Table from '@/components/table';
 
-import type { TableDefinition } from '@/types';
 import type { ClientModel } from '@/types/models';
 
 const ClientsPage = () => {
-  const [data, setData] = useState<ClientModel[]>([]);
-  const [columns, setColumns] = useState<TableColumn<ClientModel>[]>([]);
+  const [tableData, setTableData] = useState<ClientModel[]>([]);
+
+  const { isLoading, data: clients } = useQuery('clientsData', async () => {
+    return (await clientsApi.getAll()).data;
+  });
 
   useEffect(() => {
-    fetch('/api/clients')
-      .then((res) => res.json())
-      .then((clients: TableDefinition<ClientModel>) => {
-        setData(clients.data);
-        setColumns(clients.columns);
-      });
-  }, []);
+    if (!clients) return;
+    setTableData(clients.data);
+  }, [clients]);
 
-  return <Table data={data} setData={setData} columns={columns} />;
+  if (isLoading || !clients) return 'Loading...';
+
+  return <Table data={tableData} setData={setTableData} columns={clients.columns} />;
 };
 
 export default ClientsPage;

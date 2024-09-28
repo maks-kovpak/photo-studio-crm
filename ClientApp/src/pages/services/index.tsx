@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react';
-import Table, { TableColumn } from '@/components/table';
+import { useQuery } from 'react-query';
+import { servicesApi } from '@/api/services';
+import Table from '@/components/table';
 
-import type { TableDefinition } from '@/types';
 import type { ServiceModel } from '@/types/models';
 
 const ServicesPage = () => {
-  const [data, setData] = useState<ServiceModel[]>([]);
-  const [columns, setColumns] = useState<TableColumn<ServiceModel>[]>([]);
+  const [tableData, setTableData] = useState<ServiceModel[]>([]);
+
+  const { isLoading, data: services } = useQuery('servicesData', async () => {
+    return (await servicesApi.getAll()).data;
+  });
 
   useEffect(() => {
-    fetch('/api/services')
-      .then((res) => res.json())
-      .then((clients: TableDefinition<ServiceModel>) => {
-        setData(clients.data);
-        setColumns(clients.columns);
-      });
-  }, []);
+    if (!services) return;
+    setTableData(services.data);
+  }, [services]);
 
-  return <Table data={data} setData={setData} columns={columns} />;
+  if (isLoading || !services) return 'Loading...';
+
+  return <Table data={tableData} setData={setTableData} columns={services.columns} />;
 };
 
 export default ServicesPage;

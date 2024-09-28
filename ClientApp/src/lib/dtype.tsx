@@ -1,8 +1,8 @@
 import { Input, InputNumber } from 'antd';
 
 export const DTypeConfig = {
-  text:  <Input />,
-  number:  <InputNumber style={{ width: '100%' }} />,
+  text: <Input />,
+  number: <InputNumber style={{ width: '100%' }} />,
   price: <InputNumber prefix="₴" style={{ width: '100%' }} />,
 };
 
