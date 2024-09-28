@@ -1,0 +1,12 @@
+.ant-layout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.ant-layout-header .logo {
+  color: white;
+  margin-bottom: 0;
+  line-height: 1;
+}

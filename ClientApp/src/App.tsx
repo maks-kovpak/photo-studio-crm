@@ -1,11 +1,16 @@
-import { RouterProvider } from 'react-router-dom';
-import { router } from '@/lib/router';
+import { Layout } from 'antd';
+import { Outlet } from 'react-router-dom';
+import Header from './components/header';
 
 const App = () => {
   return (
-    <main>
-      <RouterProvider router={router} />
-    </main>
+    <Layout style={{ background: 'white' }}>
+      <Header />
+
+      <Layout.Content style={{ width: '90vw', margin: 'auto' }}>
+        <Outlet />
+      </Layout.Content>
+    </Layout>
   );
 };
 

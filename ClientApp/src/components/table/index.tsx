@@ -74,12 +74,19 @@ const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) =
   ];
 
   const mergedColumns = internalColumns.map((col) => {
-    return { minWidth: COLUMN_MIN_WIDTH, ...col };
+    const additionalParams = col.dataIndex === 'id' ? { minWidth: 100, width: 100 } : {};
+    return { minWidth: COLUMN_MIN_WIDTH, ...col, ...additionalParams };
   });
 
   return (
     <>
-      <AntTable bordered={true} dataSource={data} columns={mergedColumns} tableLayout="auto" />
+      <AntTable
+        bordered={true}
+        dataSource={data}
+        columns={mergedColumns}
+        tableLayout="auto"
+        scroll={{ x: '100%' }}
+      />
       <ModalForm
         className="edit-form"
         title="Edit"
