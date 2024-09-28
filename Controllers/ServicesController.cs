@@ -22,7 +22,7 @@ public class ServicesController : ControllerBase {
             new ColumnDefintion { Title = "ID", DataIndex = "id", Editable = false },
             new ColumnDefintion { Title = "Name", DataIndex = "name", Editable = true, Dtype = "text" },
             new ColumnDefintion { Title = "Description", DataIndex = "description", Editable = true, Dtype = "text" },
-            new ColumnDefintion { Title = "Price", DataIndex = "price", Editable = true, Dtype = "number" },
+            new ColumnDefintion { Title = "Price", DataIndex = "price", Editable = true, Dtype = "price" },
         };
 
         var data = _context.Services.Select(service => service).ToArray();
