@@ -7,7 +7,7 @@ const App = () => {
     <Layout style={{ background: 'white' }}>
       <Header />
 
-      <Layout.Content style={{ width: '90vw', margin: 'auto' }}>
+      <Layout.Content style={{ padding: '0 50px' }}>
         <Outlet />
       </Layout.Content>
     </Layout>

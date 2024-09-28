@@ -6,7 +6,7 @@ import Table from '@/components/table';
 import type { ServiceModel } from '@/types/models';
 
 const ServicesPage = () => {
-  const [tableData, setTableData] = useState<ServiceModel[]>([]);
+  const [tableData, setTableData] = useState<ServiceModel[]>();
 
   const { isLoading, data: services } = useQuery('servicesData', async () => {
     return (await servicesApi.getAll()).data;
@@ -17,9 +17,13 @@ const ServicesPage = () => {
     setTableData(services.data);
   }, [services]);
 
-  if (isLoading || !services) return 'Loading...';
-
-  return <Table data={tableData} setData={setTableData} columns={services.columns} />;
+  return (
+    <>
+      {!isLoading && services && (
+        <Table data={tableData} setData={setTableData} columns={services.columns} />
+      )}
+    </>
+  );
 };
 
 export default ServicesPage;

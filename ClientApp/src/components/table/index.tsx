@@ -19,8 +19,8 @@ export interface TableColumn<T extends BaseModel>
 }
 
 interface TableProps<T extends BaseModel> {
-  data: T[];
-  setData: Dispatch<SetStateAction<T[]>>;
+  data: T[] | undefined;
+  setData: Dispatch<SetStateAction<T[] | undefined>>;
   columns: TableColumn<T>[];
 }
 
@@ -40,6 +40,8 @@ const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) =
   };
 
   const saveData = async () => {
+    if (!data) return;
+
     try {
       const row = (await form.validateFields()) as T;
 
@@ -80,13 +82,15 @@ const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) =
 
   return (
     <>
-      <AntTable
-        bordered={true}
-        dataSource={data}
-        columns={mergedColumns}
-        tableLayout="auto"
-        scroll={{ x: '100%' }}
-      />
+      {data && (
+        <AntTable
+          bordered={true}
+          dataSource={data}
+          columns={mergedColumns}
+          tableLayout="auto"
+          scroll={{ x: '100%' }}
+        />
+      )}
       <ModalForm
         className="edit-form"
         title="Edit"

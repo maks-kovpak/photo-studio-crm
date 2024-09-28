@@ -6,7 +6,7 @@ import Table from '@/components/table';
 import type { ClientModel } from '@/types/models';
 
 const ClientsPage = () => {
-  const [tableData, setTableData] = useState<ClientModel[]>([]);
+  const [tableData, setTableData] = useState<ClientModel[]>();
 
   const { isLoading, data: clients } = useQuery('clientsData', async () => {
     return (await clientsApi.getAll()).data;
@@ -17,9 +17,13 @@ const ClientsPage = () => {
     setTableData(clients.data);
   }, [clients]);
 
-  if (isLoading || !clients) return 'Loading...';
-
-  return <Table data={tableData} setData={setTableData} columns={clients.columns} />;
+  return (
+    <>
+      {!isLoading && clients && (
+        <Table data={tableData} setData={setTableData} columns={clients.columns} />
+      )}
+    </>
+  );
 };
 
 export default ClientsPage;
