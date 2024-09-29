@@ -1,5 +1,5 @@
 import { Form, FormInstance, Modal } from 'antd';
-import { DTypeConfig } from '@/lib/dtype';
+import { DTypeConfig, getValuePropsConfig } from '@/lib/dtype';
 
 import type { ModalProps } from 'antd';
 import type { BaseModel } from '@/types/models';
@@ -23,6 +23,7 @@ const ModalForm = <T extends BaseModel>({ fields, formInstance, ...props }: Moda
               required={false}
               key={field.dataIndex}
               name={field.dataIndex}
+              getValueProps={field.dtype && getValuePropsConfig[field.dtype]}
               rules={[
                 {
                   required: true,

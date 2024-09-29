@@ -8,6 +8,17 @@ export interface ClientModel extends BaseModel {
   phone: string;
 }
 
+export interface OrderModel extends BaseModel {
+  clientId: number;
+  acceptanceDate: string;
+  issuanceDate: string;
+}
+
+export interface OrderItemModel extends BaseModel {
+  serviceId: number;
+  quantity: number;
+}
+
 export interface ServiceModel extends BaseModel {
   name: string;
   description: string;
