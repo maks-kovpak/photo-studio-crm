@@ -1,4 +1,6 @@
-﻿namespace PhotoStudio.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace PhotoStudio.Models;
 
 public partial class Client {
     public int Id { get; set; }
@@ -8,5 +10,6 @@ public partial class Client {
     public string Address { get; set; } = null!;
     public string Phone { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }
