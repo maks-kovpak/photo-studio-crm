@@ -7,7 +7,7 @@ export const DTypeConfig = {
   text: <Input />,
   number: <InputNumber style={{ width: '100%' }} />,
   price: <InputNumber prefix="₴" style={{ width: '100%' }} />,
-  date: <DatePicker />,
+  date: <DatePicker style={{ width: '100%' }} />,
 };
 
 export const getValuePropsConfig: GetValuePropsConfig = {
