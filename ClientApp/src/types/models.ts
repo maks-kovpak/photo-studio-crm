@@ -3,7 +3,9 @@ export interface BaseModel {
 }
 
 export interface ClientModel extends BaseModel {
-  fullName: string;
+  firstName: string;
+  lastName: string;
+  patronymic: string;
   address: string;
   phone: string;
 }

@@ -3,9 +3,9 @@ import { Form, Typography, Table as AntTable } from 'antd';
 import { COLUMN_MIN_WIDTH } from '@/lib/constants';
 import ModalForm from '@/components/modal-form';
 
-import type { Dispatch, SetStateAction } from 'react';
 import type { ColumnType } from 'antd/es/table';
 import type { BaseModel } from '@/types/models';
+import type { PatchBody } from '@/types/utils';
 import type { DType } from '@/lib/dtype';
 
 import './index.css';
@@ -20,11 +20,19 @@ export interface TableColumn<T extends BaseModel>
 
 interface TableProps<T extends BaseModel> {
   data: T[] | undefined;
-  setData: Dispatch<SetStateAction<T[] | undefined>>;
   columns: TableColumn<T>[];
+  saveAction: (id: number, data: PatchBody<T>) => Promise<void> | void;
+  tableLoading?: boolean;
+  confirmLoading?: boolean;
 }
 
-const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) => {
+const Table = <T extends BaseModel>({
+  data,
+  columns,
+  saveAction,
+  tableLoading,
+  confirmLoading,
+}: TableProps<T>) => {
   const [form] = Form.useForm();
   const [openModal, setOpenModal] = useState(false);
   const [editingKey, setEditingKey] = useState<number | null>(null);
@@ -40,26 +48,17 @@ const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) =
   };
 
   const saveData = async () => {
-    if (!data) return;
+    if (!data || !editingKey) return;
 
     try {
       const row = (await form.validateFields()) as T;
 
-      const newData = [...data];
-      const index = newData.findIndex((item) => editingKey === item.id);
-
-      if (index > -1) {
-        newData.splice(index, 1, { ...newData[index], ...row });
-        setData(newData);
-      } else {
-        newData.push(row);
-        setData(newData);
-      }
+      await saveAction(editingKey, row);
 
       setEditingKey(null);
       closeModal();
     } catch (errInfo) {
-      console.log('Validate failed:', errInfo);
+      console.error('Validate failed:', errInfo);
     }
   };
 
@@ -89,6 +88,7 @@ const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) =
           columns={mergedColumns}
           tableLayout="auto"
           scroll={{ x: '100%' }}
+          loading={tableLoading}
         />
       )}
       <ModalForm
@@ -100,6 +100,7 @@ const Table = <T extends BaseModel>({ data, setData, columns }: TableProps<T>) =
         onClose={closeModal}
         onCancel={closeModal}
         onOk={saveData}
+        confirmLoading={confirmLoading}
       />
     </>
   );
