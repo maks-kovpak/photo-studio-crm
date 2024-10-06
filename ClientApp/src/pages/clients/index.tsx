@@ -30,7 +30,7 @@ const ClientsPage = () => {
         <Table
           data={clients.data}
           columns={clients.columns}
-          saveAction={(id, data) => updateClientMutation.mutate({ id, data })}
+          saveAction={(id, data) => updateClientMutation.mutateAsync({ id, data })}
           tableLoading={isRefetching}
           confirmLoading={updateClientMutation.isLoading}
         />

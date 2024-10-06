@@ -5,3 +5,8 @@ export interface TableDefinition<T extends BaseModel> {
   data: T[];
   columns: TableColumn<T>[];
 }
+
+export interface ResponseResult {
+  statusCode: number;
+  errorMessage?: string;
+}

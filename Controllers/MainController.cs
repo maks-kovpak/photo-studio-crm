@@ -15,8 +15,13 @@ public abstract class MainController : ControllerBase {
         _context = context;
     }
 
-    public void PartialUpdate<T, P>(T? entity, P body) where P : class {
-        if (entity is null) return;
+    public ObjectResult PartialUpdate<T, P>(T? entity, P body) where P : class {
+        if (entity is null) {
+            return NotFound(new {
+                StatusCode = 404,
+                ErrorMessage = "The item with this id does not exists"
+            });
+        }
 
         var patch = new ExpandoObject() as IDictionary<string, object>;
 
@@ -30,5 +35,7 @@ public abstract class MainController : ControllerBase {
 
         _context.Entry(entity).CurrentValues.SetValues(patch);
         _context.SaveChanges();
+
+        return Ok(new { StatusCode = 200 });
     }
 }

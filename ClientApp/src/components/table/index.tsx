@@ -21,7 +21,7 @@ export interface TableColumn<T extends BaseModel>
 interface TableProps<T extends BaseModel> {
   data: T[] | undefined;
   columns: TableColumn<T>[];
-  saveAction: (id: number, data: PatchBody<T>) => Promise<void> | void;
+  saveAction: (id: number, data: PatchBody<T>) => Promise<void>;
   tableLoading?: boolean;
   confirmLoading?: boolean;
 }
@@ -51,14 +51,14 @@ const Table = <T extends BaseModel>({
     if (!data || !editingKey) return;
 
     try {
-      const row = (await form.validateFields()) as T;
+      const values = (await form.validateFields()) as T;
 
-      await saveAction(editingKey, row);
+      await saveAction(editingKey, values);
 
       setEditingKey(null);
       closeModal();
     } catch (errInfo) {
-      console.error('Validate failed:', errInfo);
+      console.error('Validation failed:', errInfo);
     }
   };
 

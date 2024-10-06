@@ -40,8 +40,8 @@ public class ClientsController : MainController {
     }
 
     [HttpPatch("/api/clients/{id}")]
-    public void UpdateClient(int id, ClientPatchBody body) {
+    public ObjectResult UpdateClient(int id, ClientPatchBody body) {
         var client = _context.Clients.Find(id);
-        PartialUpdate(client, body);
+        return PartialUpdate(client, body);
     }
 }

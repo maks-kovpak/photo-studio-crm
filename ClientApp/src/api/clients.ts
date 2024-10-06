@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import type { TableDefinition } from '@/types';
+import type { TableDefinition, ResponseResult } from '@/types';
 import type { ClientModel } from '@/types/models';
 import type { PatchBody } from '@/types/utils';
 
@@ -12,6 +12,6 @@ export const clientsApi = {
   },
 
   updateClient(id: number, body: PatchBody<ClientModel>) {
-    return axios.patch<void>(`${CLIENTS_BASE_URL}${id}`, body);
+    return axios.patch<ResponseResult>(`${CLIENTS_BASE_URL}${id}`, body);
   },
 };
