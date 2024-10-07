@@ -52,13 +52,10 @@ const Table = <T extends BaseModel>({
 
     try {
       const values = (await form.validateFields()) as T;
-
       await saveAction(editingKey, values);
-
+    } finally {
       setEditingKey(null);
       closeModal();
-    } catch (errInfo) {
-      console.error('Validation failed:', errInfo);
     }
   };
 

@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios from '@/api/axios';
 
 import type { TableDefinition, ResponseResult } from '@/types';
 import type { ClientModel } from '@/types/models';
 import type { PatchBody } from '@/types/utils';
 
-const CLIENTS_BASE_URL = '/api/clients/';
+const CLIENTS_BASE_URL = '/clients/';
 
 export const clientsApi = {
   getAll() {
