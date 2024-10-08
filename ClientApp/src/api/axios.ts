@@ -10,9 +10,9 @@ axios.interceptors.response.use(
   (error) => {
     const { errorMessage } = error.response.data;
 
-    notification.error({
-      message: errorMessage,
-    });
+    if (errorMessage) {
+      notification.error({ message: errorMessage });
+    }
 
     return Promise.reject(error);
   }

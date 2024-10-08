@@ -12,7 +12,7 @@ interface ModalFormProps<T extends BaseModel> extends ModalProps {
 
 const ModalForm = <T extends BaseModel>({ fields, formInstance, ...props }: ModalFormProps<T>) => {
   return (
-    <Modal {...props}>
+    <Modal forceRender={true} {...props}>
       <Form form={formInstance} component={false}>
         {fields
           .filter((field) => field.editable)
@@ -27,7 +27,7 @@ const ModalForm = <T extends BaseModel>({ fields, formInstance, ...props }: Moda
               rules={[
                 {
                   required: true,
-                  message: `Please input this field!`,
+                  message: 'Please input this field!',
                 },
               ]}
             >

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Typography, Table as AntTable } from 'antd';
+import { Form, Typography, Table as AntTable, message } from 'antd';
 import { COLUMN_MIN_WIDTH } from '@/lib/constants';
 import ModalForm from '@/components/modal-form';
 
@@ -53,9 +53,11 @@ const Table = <T extends BaseModel>({
     try {
       const values = (await form.validateFields()) as T;
       await saveAction(editingKey, values);
-    } finally {
+
       setEditingKey(null);
       closeModal();
+    } catch {
+      message.error({ content: 'The form is not valid!' });
     }
   };
 
