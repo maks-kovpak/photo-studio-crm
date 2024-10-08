@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { paths } from './paths';
 
 import App from '@/App';
@@ -6,7 +6,7 @@ import ClientsPage from '@/pages/clients';
 import OrdersPage from '@/pages/orders';
 import ServicesPage from '@/pages/services';
 
-export const router = createBrowserRouter([
+export const routes = [
   {
     path: paths.main,
     element: <App />,
@@ -17,4 +17,4 @@ export const router = createBrowserRouter([
       { path: paths.orders, element: <OrdersPage /> },
     ],
   },
-]);
+];

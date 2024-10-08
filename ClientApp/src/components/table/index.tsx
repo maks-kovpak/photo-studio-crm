@@ -80,6 +80,7 @@ const Table = <T extends BaseModel>({
     <>
       {data && (
         <AntTable
+          rowKey={'id'}
           bordered={true}
           dataSource={data}
           columns={mergedColumns}

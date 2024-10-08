@@ -1,21 +1,23 @@
 import { Layout, Menu, Typography } from 'antd';
-import type { ItemType, MenuItemType } from 'antd/es/menu/interface';
+import { NavLink } from 'react-router-dom';
+import { paths } from '@/lib/paths';
+
+import type { ItemType } from 'antd/es/menu/interface';
 
 import './index.css';
-import { NavLink } from 'react-router-dom';
 
-const items: ItemType<MenuItemType>[] = [
+const items: ItemType[] = [
   {
     key: 'clients-link',
-    label: <NavLink to="/clients">Clients</NavLink>,
+    label: <NavLink to={paths.clients}>Clients</NavLink>,
   },
   {
     key: 'orders-link',
-    label: <NavLink to="/orders">Orders</NavLink>,
+    label: <NavLink to={paths.orders}>Orders</NavLink>,
   },
   {
     key: 'services-link',
-    label: <NavLink to="/services">Services</NavLink>,
+    label: <NavLink to={paths.services}>Services</NavLink>,
   },
 ];
 
