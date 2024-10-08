@@ -11,11 +11,11 @@ namespace PhotoStudio.Controllers;
 public abstract class MainController : ControllerBase {
     protected readonly PhotoStudioContext _context;
 
-    public MainController(PhotoStudioContext context) {
+    protected MainController(PhotoStudioContext context) {
         _context = context;
     }
 
-    public ObjectResult PartialUpdate<T, P>(T? entity, P body) where P : class {
+    protected ObjectResult PartialUpdate<T, P>(T? entity, P body) where P : class {
         if (entity is null) {
             return NotFound(new {
                 StatusCode = 404,

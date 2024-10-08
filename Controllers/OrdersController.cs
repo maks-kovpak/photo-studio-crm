@@ -19,10 +19,10 @@ public class OrdersController : ControllerBase {
     [HttpGet]
     public TableDefinition<Order> Get() {
         var columns = new[] {
-            new ColumnDefintion { Title = "ID", DataIndex = "id", Editable = false },
-            new ColumnDefintion { Title = "Client", DataIndex = "clientId", Editable = true, Dtype = "select" },
-            new ColumnDefintion { Title = "Acceptance Date", DataIndex = "acceptanceDate", Editable = true, Dtype = "date" },
-            new ColumnDefintion { Title = "Issuance Date", DataIndex = "issuanceDate", Editable = true, Dtype = "date" },
+            new ColumnDefinition { Title = "ID", DataIndex = "id", Editable = false },
+            new ColumnDefinition { Title = "Client", DataIndex = "clientId", Editable = true, DType = "select" },
+            new ColumnDefinition { Title = "Acceptance Date", DataIndex = "acceptanceDate", Editable = true, DType = "date" },
+            new ColumnDefinition { Title = "Issuance Date", DataIndex = "issuanceDate", Editable = true, DType = "date" },
         };
 
         var data = _context.Orders.Select(order => order).ToArray();
