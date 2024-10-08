@@ -7,17 +7,19 @@ using PhotoStudio.Response;
 namespace PhotoStudio.Controllers;
 
 
+public record ServicePatchBody(
+    string? Name,
+    string? Description,
+    int? Price
+);
+
 [ApiController]
 [Route("/api/services")]
-public class ServicesController : ControllerBase {
-    private readonly PhotoStudioContext _context;
-
-    public ServicesController(PhotoStudioContext context) {
-        _context = context;
-    }
+public class ServicesController : MainController {
+    public ServicesController(PhotoStudioContext context) : base(context) { }
 
     [HttpGet]
-    public TableDefinition<Service> Get() {
+    public TableDefinition<Service> GetAllServices() {
         var columns = new[] {
             new ColumnDefinition { Title = "ID", DataIndex = "id", Editable = false },
             new ColumnDefinition { Title = "Name", DataIndex = "name", Editable = true, DType = "text" },
@@ -31,5 +33,11 @@ public class ServicesController : ControllerBase {
             Data = data,
             Columns = columns
         };
+    }
+
+    [HttpPatch("/api/services/{id:int}")]
+    public ObjectResult UpdateService(int id, ServicePatchBody body) {
+        var service = _context.Services.Find(id);
+        return PartialUpdate(service, body);
     }
 }
