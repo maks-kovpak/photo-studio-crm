@@ -16,24 +16,28 @@ const ModalForm = <T extends BaseModel>({ fields, formInstance, ...props }: Moda
       <Form form={formInstance} component={false}>
         {fields
           .filter((field) => field.editable)
-          .map((field) => (
-            <Form.Item
-              label={field.title}
-              layout="vertical"
-              required={false}
-              key={field.dataIndex}
-              name={field.dataIndex}
-              getValueProps={field.dtype && getValuePropsConfig[field.dtype]}
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input this field!',
-                },
-              ]}
-            >
-              {DTypeConfig[field.dtype ?? 'text']}
-            </Form.Item>
-          ))}
+          .map((field) => {
+            const formElement = DTypeConfig[field.dtype ?? 'text'];
+
+            return (
+              <Form.Item
+                label={field.title}
+                layout="vertical"
+                required={false}
+                key={field.dataIndex}
+                name={field.dataIndex}
+                getValueProps={field.dtype && getValuePropsConfig[field.dtype]}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input this field!',
+                  },
+                ]}
+              >
+                {formElement(formInstance.getFieldsValue())}
+              </Form.Item>
+            );
+          })}
       </Form>
     </Modal>
   );

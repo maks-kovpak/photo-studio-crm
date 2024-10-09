@@ -1,13 +1,16 @@
 import dayjs from 'dayjs';
 import { DatePicker, Input, InputNumber } from 'antd';
+import { ClientDataType } from './client';
 
 import type { StoreValue } from 'antd/es/form/interface';
+import type { OrderModel } from '@/types/models';
 
 export const DTypeConfig = {
-  text: <Input />,
-  number: <InputNumber style={{ width: '100%' }} />,
-  price: <InputNumber prefix="₴" style={{ width: '100%' }} />,
-  date: <DatePicker style={{ width: '100%' }} />,
+  text: () => <Input />,
+  number: () => <InputNumber style={{ width: '100%' }} />,
+  price: () => <InputNumber prefix="₴" style={{ width: '100%' }} />,
+  date: () => <DatePicker style={{ width: '100%' }} />,
+  client: (record: OrderModel) => <ClientDataType clientId={record.clientId} />,
 };
 
 export const getValuePropsConfig: GetValuePropsConfig = {
