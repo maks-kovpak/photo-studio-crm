@@ -3,8 +3,10 @@ import { Select } from 'antd';
 import { useClients } from '@/stores/clients.store';
 
 import type { FC } from 'react';
+import type { OrderModel } from '@/types/models';
+import type { DTypeConfigItem } from '@/types/dtype';
 
-export const ClientDataType: FC<{ clientId: number }> = ({ clientId }) => {
+export const ClientsSelector: FC<{ clientId: number }> = ({ clientId }) => {
   const { clients } = useClients();
   const [value, setValue] = useState<number>();
 
@@ -27,3 +29,16 @@ export const ClientDataType: FC<{ clientId: number }> = ({ clientId }) => {
     />
   );
 };
+
+const ClientDataType: DTypeConfigItem = {
+  renderCell: (value: number) => {
+    const { clients } = useClients.getState();
+    const foundClient = clients.find((client) => client.id === value);
+
+    if (!foundClient) return '-';
+    return `${foundClient.lastName} ${foundClient.firstName}`;
+  },
+  renderFormItem: (record: OrderModel) => <ClientsSelector clientId={record.clientId} />,
+};
+
+export default ClientDataType;

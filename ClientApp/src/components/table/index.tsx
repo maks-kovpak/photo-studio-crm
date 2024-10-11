@@ -7,17 +7,16 @@ import ModalForm from '@/components/modal-form';
 import type { ColumnType } from 'antd/es/table';
 import type { BaseModel } from '@/types/models';
 import type { PatchBody } from '@/types/utils';
-import type { DType } from '@/lib/dtype';
+import type { DType } from '@/types/dtype';
 
 import './index.css';
 
-export interface TableColumn<T extends BaseModel>
-  extends Omit<ColumnType<T>, 'dataIndex' | 'title'> {
+export type TableColumn<T extends BaseModel> = Omit<ColumnType<T>, 'dataIndex' | 'title'> & {
   title: string;
   dataIndex: string;
   dtype?: DType;
   editable?: boolean;
-}
+};
 
 interface TableProps<T extends BaseModel> {
   data: T[] | undefined;
@@ -76,6 +75,7 @@ const Table = <T extends BaseModel>({
 
   const mergedColumns = internalColumns.map((col) => {
     const additionalParams = col.dataIndex === 'id' ? { minWidth: 100, width: 100 } : {};
+
     return {
       minWidth: COLUMN_MIN_WIDTH,
       ...col,
