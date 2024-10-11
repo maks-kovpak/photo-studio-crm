@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, Typography, Table as AntTable, message } from 'antd';
 import { COLUMN_MIN_WIDTH } from '@/lib/constants';
+import { DTypeConfig } from '@/lib/dtype';
 import ModalForm from '@/components/modal-form';
 
 import type { ColumnType } from 'antd/es/table';
@@ -75,7 +76,12 @@ const Table = <T extends BaseModel>({
 
   const mergedColumns = internalColumns.map((col) => {
     const additionalParams = col.dataIndex === 'id' ? { minWidth: 100, width: 100 } : {};
-    return { minWidth: COLUMN_MIN_WIDTH, ...col, ...additionalParams };
+    return {
+      minWidth: COLUMN_MIN_WIDTH,
+      ...col,
+      ...additionalParams,
+      render: col.render ?? DTypeConfig[col.dtype ?? 'text'].renderCell,
+    };
   });
 
   return (

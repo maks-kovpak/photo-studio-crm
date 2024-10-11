@@ -4,6 +4,7 @@ import { DTypeConfig, getValuePropsConfig } from '@/lib/dtype';
 import type { ModalProps } from 'antd';
 import type { BaseModel } from '@/types/models';
 import type { TableColumn } from '@/components/table';
+import type { DTypeRenderFunc } from '@/lib/dtype';
 
 interface ModalFormProps<T extends BaseModel> extends ModalProps {
   fields: TableColumn<T>[];
@@ -17,7 +18,8 @@ const ModalForm = <T extends BaseModel>({ fields, formInstance, ...props }: Moda
         {fields
           .filter((field) => field.editable)
           .map((field) => {
-            const formElement = DTypeConfig[field.dtype ?? 'text'];
+            const itemConfig = DTypeConfig[field.dtype ?? 'text'];
+            const render = itemConfig.renderFormItem as DTypeRenderFunc<T>;
 
             return (
               <Form.Item
@@ -34,7 +36,7 @@ const ModalForm = <T extends BaseModel>({ fields, formInstance, ...props }: Moda
                   },
                 ]}
               >
-                {formElement(formInstance.getFieldsValue())}
+                {render(formInstance.getFieldsValue())}
               </Form.Item>
             );
           })}
