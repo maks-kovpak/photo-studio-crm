@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
+import { useInitApplication } from './lib/init';
 import Header from './components/header';
 
 const App = () => {
+  const { onInit } = useInitApplication();
+  useEffect(onInit, [onInit]);
+
   return (
     <Layout style={{ background: 'white' }}>
       <Header />
