@@ -13,7 +13,7 @@ export interface ClientModel extends BaseModel {
 export interface OrderModel extends BaseModel {
   clientId: number;
   acceptanceDate: string;
-  issuanceDate: string;
+  issuanceDate: string | null;
 }
 
 export interface OrderItemModel extends BaseModel {

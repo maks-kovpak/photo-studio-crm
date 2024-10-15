@@ -13,10 +13,10 @@ const ClientsPage = () => {
   const {
     isLoading,
     data: tableData,
-    refetch,
+    refetch: refetchClients,
     isRefetching,
   } = useQuery('clients', async () => {
-    return (await clientsApi.getAll()).data;
+    return await clientsApi.getAll();
   });
 
   useEffect(() => {
@@ -24,12 +24,12 @@ const ClientsPage = () => {
     setClients(tableData.data);
   }, [setClients, tableData]);
 
-  const updateClientMutation = useMutation({
+  const updateMutation = useMutation({
     mutationFn: async (body: { id: number; data: PatchBody<ClientModel> }) => {
       await clientsApi.updateClient(body.id, body.data);
     },
     onSuccess: async () => {
-      await refetch();
+      await refetchClients();
     },
   });
 
@@ -39,9 +39,9 @@ const ClientsPage = () => {
         <Table
           data={tableData.data}
           columns={tableData.columns}
-          saveAction={(id, data) => updateClientMutation.mutateAsync({ id, data })}
+          saveAction={(id, data) => updateMutation.mutateAsync({ id, data })}
           tableLoading={isRefetching}
-          confirmLoading={updateClientMutation.isLoading}
+          confirmLoading={updateMutation.isLoading}
         />
       )}
     </>

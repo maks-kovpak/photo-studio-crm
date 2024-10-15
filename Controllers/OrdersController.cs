@@ -7,6 +7,13 @@ using PhotoStudio.Response;
 namespace PhotoStudio.Controllers;
 
 
+public record OrderPatchBody(
+    int? Id,
+    int? ClientId,
+    DateTime? AcceptanceDate,
+    DateTime? IssuanceDate
+);
+
 [ApiController]
 [Route("/api/orders")]
 public class OrdersController : MainController {
@@ -27,5 +34,11 @@ public class OrdersController : MainController {
             Data = data,
             Columns = columns
         };
+    }
+
+    [HttpPatch("/api/orders/{id:int}")]
+    public ObjectResult UpdateOrder(int id, OrderPatchBody body) {
+        var order = _context.Orders.Find(id);
+        return PartialUpdate(order, body);
     }
 }

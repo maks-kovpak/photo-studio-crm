@@ -16,7 +16,7 @@ export const useClients = create<IClientsState & IClientsActions>((set) => ({
   clients: [],
   setClients: (clients: ClientModel[]) => set({ clients }),
   fetchClients: async () => {
-    const { data: result } = await clientsApi.getAll();
+    const result = await clientsApi.getAll();
     set({ clients: result.data });
   },
 }));

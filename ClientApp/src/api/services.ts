@@ -6,11 +6,13 @@ import type { ServiceModel } from '@/types/models';
 import type { PatchBody } from '@/types/utils';
 
 export const servicesApi = {
-  getAll() {
-    return axios.get<TableDefinition<ServiceModel>>(paths.services);
+  async getAll() {
+    const response = await axios.get<TableDefinition<ServiceModel>>(paths.services);
+    return response.data;
   },
 
-  updateService(id: number, body: PatchBody<ServiceModel>) {
-    return axios.patch<ResponseResult>(`${paths.services}/${id}`, body);
+  async updateService(id: number, body: PatchBody<ServiceModel>) {
+    const response = await axios.patch<ResponseResult>(`${paths.services}/${id}`, body);
+    return response.data;
   },
 };

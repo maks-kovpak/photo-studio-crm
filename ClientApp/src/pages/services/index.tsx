@@ -9,18 +9,18 @@ const ServicesPage = () => {
   const {
     isLoading,
     data: services,
-    refetch,
+    refetch: refetchServices,
     isRefetching,
   } = useQuery('servicesData', async () => {
-    return (await servicesApi.getAll()).data;
+    return await servicesApi.getAll();
   });
 
-  const updateServiceMutation = useMutation({
+  const updateMutation = useMutation({
     mutationFn: async (body: { id: number; data: PatchBody<ServiceModel> }) => {
       await servicesApi.updateService(body.id, body.data);
     },
     onSuccess: async () => {
-      await refetch();
+      await refetchServices();
     },
   });
 
@@ -30,9 +30,9 @@ const ServicesPage = () => {
         <Table
           data={services.data}
           columns={services.columns}
-          saveAction={(id, data) => updateServiceMutation.mutateAsync({ id, data })}
+          saveAction={(id, data) => updateMutation.mutateAsync({ id, data })}
           tableLoading={isRefetching}
-          confirmLoading={updateServiceMutation.isLoading}
+          confirmLoading={updateMutation.isLoading}
         />
       )}
     </>

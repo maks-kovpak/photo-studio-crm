@@ -6,11 +6,13 @@ import type { ClientModel } from '@/types/models';
 import type { PatchBody } from '@/types/utils';
 
 export const clientsApi = {
-  getAll() {
-    return axios.get<TableDefinition<ClientModel>>(paths.clients);
+  async getAll() {
+    const response = await axios.get<TableDefinition<ClientModel>>(paths.clients);
+    return response.data;
   },
 
-  updateClient(id: number, body: PatchBody<ClientModel>) {
-    return axios.patch<ResponseResult>(`${paths.clients}/${id}`, body);
+  async updateClient(id: number, body: PatchBody<ClientModel>) {
+    const response = await axios.patch<ResponseResult>(`${paths.clients}/${id}`, body);
+    return response.data;
   },
 };
