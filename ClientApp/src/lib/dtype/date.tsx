@@ -11,8 +11,9 @@ const DateDataType: DTypeConfigItem = {
       year: 'numeric',
     });
   },
-  renderFormItem: () => <DatePicker style={{ width: '100%' }} format="DD.MM.YYYY" />,
-  getValueProps: (value) => ({ value: value ? dayjs(value) : '' }),
+  renderFormItem: () => <DatePicker style={{ width: '100%' }} />,
+  getValueProps: (value) => ({ value: value && dayjs(value) }),
+  normalize: (value: dayjs.Dayjs) => value && value.format('YYYY-MM-DDTHH:mm:ss'),
 };
 
 export default DateDataType;

@@ -25,8 +25,9 @@ const ModalForm = <T extends BaseModel>({ fields, formInstance, ...props }: Moda
                 layout="vertical"
                 required={false}
                 key={field.dataIndex}
-                name={field.dataIndex}
+                name={[field.dataIndex]}
                 getValueProps={conf?.getValueProps}
+                normalize={conf?.normalize}
                 rules={[
                   {
                     required: true,
